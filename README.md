@@ -11,11 +11,11 @@ npm install react-native-tink-wrapper-v2
 ## Usage
 
 ```js
-import { multiply } from 'react-native-tink-wrapper-v2';
+import { TinkView } from 'react-native-tink-wrapper-v2';
 
 // ...
 
-const result = await multiply(3, 7);
+ <TinkView style={{flex:1}} />
 ```
 
 ## Contributing
