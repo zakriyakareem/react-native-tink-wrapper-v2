@@ -13,7 +13,6 @@ export default function App() {
   return (
     <View style={styles.container}>
     <TinkView style={{flex:1,}} />
-      {/* <Text>Result: {result}</Text> */}
     </View>
   );
 }
