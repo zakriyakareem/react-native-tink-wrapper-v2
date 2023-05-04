@@ -31,5 +31,7 @@ Pod::Spec.new do |s|
     s.dependency "RCTRequired"
     s.dependency "RCTTypeSafety"
     s.dependency "ReactCommon/turbomodule/core"
+    s.dependency "TinkLink", "~> 2.0.0"
+    s.dependency "TinkLinkUI", "~> 0.16.0"
   end
 end

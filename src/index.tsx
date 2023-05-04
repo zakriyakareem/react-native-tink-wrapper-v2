@@ -1,4 +1,10 @@
-import { NativeModules, Platform } from 'react-native';
+import {
+  requireNativeComponent,
+  UIManager,
+  ViewStyle,
+  Platform,
+  NativeModules,
+} from 'react-native';
 
 const LINKING_ERROR =
   `The package 'react-native-tink-wrapper-v2' doesn't seem to be linked. Make sure: \n\n` +
@@ -16,6 +22,18 @@ const TinkWrapperV2 = NativeModules.TinkWrapperV2
         },
       }
     );
+
+const ComponentName = 'TinkView';
+type DemoDocumentationProps = {
+  style: ViewStyle;
+};
+
+export const TinkView =
+  UIManager.getViewManagerConfig(ComponentName) != null
+    ? requireNativeComponent<DemoDocumentationProps>(ComponentName)
+    : () => {
+        throw new Error(LINKING_ERROR);
+      };
 
 export function multiply(a: number, b: number): Promise<number> {
   return TinkWrapperV2.multiply(a, b);
