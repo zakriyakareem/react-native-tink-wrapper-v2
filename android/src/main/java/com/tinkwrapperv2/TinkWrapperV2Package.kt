@@ -7,7 +7,7 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ViewManager
 
 
-class DemoDocumentationPackage : ReactPackage {
+class TinkViewPackage : ReactPackage {
   override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
     val modules: MutableList<NativeModule> = ArrayList()
     modules.add(TinkWrapperV2Module(reactContext))

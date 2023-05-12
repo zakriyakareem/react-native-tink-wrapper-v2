@@ -1,8 +1,35 @@
+// import {
+//   requireNativeComponent,
+//   UIManager,
+//   ViewStyle,
+//   Platform,
+// } from 'react-native';
+
+// const LINKING_ERROR =
+//   `The package 'react-native-tink-wrapper-v2' doesn't seem to be linked. Make sure: \n\n` +
+//   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
+//   '- You rebuilt the app after installing the package\n' +
+//   '- You are not using Expo Go\n';
+
+// const ComponentName = 'TinkView';
+// type DemoDocumentationProps = {
+//   style: ViewStyle;
+//   onSuccess?: (data: string) => void;
+// };
+
+// export const TinkView =
+//   UIManager.getViewManagerConfig(ComponentName) != null
+//     ? requireNativeComponent<DemoDocumentationProps>(ComponentName)
+//     : () => {
+//         throw new Error(LINKING_ERROR);
+//       };
+import React from 'react';
 import {
   requireNativeComponent,
   UIManager,
   ViewStyle,
   Platform,
+  NativeEventEmitter,
   NativeModules,
 } from 'react-native';
 
@@ -12,29 +39,41 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-const TinkWrapperV2 = NativeModules.TinkWrapperV2
-  ? NativeModules.TinkWrapperV2
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
-
 const ComponentName = 'TinkView';
-type DemoDocumentationProps = {
+
+type TinkViewProps = {
   style: ViewStyle;
+  onSuccess?: (data: string) => void;
 };
 
-export const TinkView =
-  UIManager.getViewManagerConfig(ComponentName) != null
-    ? requireNativeComponent<DemoDocumentationProps>(ComponentName)
-    : () => {
-        throw new Error(LINKING_ERROR);
-      };
+const TinkViewNativeModule = NativeModules.TinkViewManager;
+const TinkViewEventEmitter = new NativeEventEmitter(TinkViewNativeModule);
 
-export function multiply(a: number, b: number): Promise<number> {
-  return TinkWrapperV2.multiply(a, b);
-}
+export const TinkView = UIManager.getViewManagerConfig(ComponentName) != null
+  ? requireNativeComponent<TinkViewProps>(ComponentName, null)
+  : () => {
+      throw new Error(LINKING_ERROR);
+    };
+    
+
+React.useEffect(() => {
+  const subscription = TinkViewEventEmitter.addListener('onSuccess', (data) => {
+    console.log('data ',data)
+    const { onSuccess } = TinkViewProps;
+    if (onSuccess) {
+      onSuccess(data);
+    }
+  });
+
+  return () => {
+    subscription.remove();
+  };
+}, []);
+
+
+
+
+
+
+
+

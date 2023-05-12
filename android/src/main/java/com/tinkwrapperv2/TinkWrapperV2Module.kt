@@ -21,6 +21,7 @@ import com.tink.link.core.themes.TinkAppearanceXml
 class TinkWrapperV2Module(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
 
+
   override fun getName(): String {
     return NAME
   }
