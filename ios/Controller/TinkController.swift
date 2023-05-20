@@ -1,0 +1,119 @@
+//
+//  TinkController.swift
+//  TinkLinkSimpleSample
+//
+//  Created by Sharjeel Ayubi on 19/05/2023.
+//
+
+import Foundation
+import UIKit
+import TinkLink
+import TinkLinkUI
+
+class TinkController: UIView {
+    
+    var containerView: UIView!
+    var closeButton: UIButton!
+    var tinkNavigationController: UINavigationController?
+    
+    // This is a simple sample app, demonstrating how easy it can be to integrate Tinks mobile SDK in your app.
+
+    // First, add your client ID. It can be found on console.tink.com in your apps settings.
+    let clientID: String = "2b40d76678a2415eb4be14a415685db2"
+    // Then add `tinksdk://example` into the list of redirect URIs under your app's settings in Console.
+    let redirectURI: String = "https://console.tink.com/callback"
+    // And lastly, the market code for the market you want to test, e.g. "GB" for Great Britain, or "SE" for Sweden.
+    let market = Market(code: "BE")
+    
+    // Now you're all set!
+    // Hit Run to test your project with Tinks mobile SDK.
+    
+    var onSuccess: ((OneTimeConnection)->Void)?
+    var onFailure: ((Error)->Void)?
+    
+    public func initSubview(frame: CGRect) {
+       self.frame = frame
+        setupContainerView()
+        startTinkController()
+    }
+    
+    //Call this function in the start to create a container view in which we are going to display tink
+    //It will hide the container View initially because tink will not be initialised yet
+    func setupContainerView() {
+        containerView = UIView()
+        containerView.backgroundColor = .white
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(containerView)
+        
+        // Add constraints to position the containerView
+        NSLayoutConstraint.activate([
+            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            containerView.heightAnchor.constraint(equalTo: self.heightAnchor)
+        ])
+    }
+    
+    //Call this function whenever you want to start tink.
+    //It will initiate tink and add it into the container view that we created in the start.
+    func startTinkController() {
+        let configuration = Configuration(clientID: clientID, redirectURI: redirectURI)
+        let accountListViewController = AccountListViewController()
+        accountListViewController.show(accountListViewController, sender:self)
+        tinkNavigationController = Tink.Transactions.connectAccountsForOneTimeAccess(configuration: configuration, market: market) { [weak self] result in
+            switch result {
+            case .success(let connection):
+                print("TinkLink OneTimeConnection code: \(String(describing: connection.code)), TinkLink OneTimeConnection credentialsID: \(connection.credentialsID)")
+                self?.onSuccess?(connection)
+            case .failure(let error):
+                print("TinkLink OneTimeConnection error: \(error)")
+                self?.onFailure?(error)
+            }
+        }
+        containerView.addSubview(tinkNavigationController!.view)
+        tinkNavigationController?.view.frame = containerView.bounds
+        addCloseButton()
+        tinkNavigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    // Create the close button in containerView
+    func addCloseButton() {
+        closeButton = UIButton(type: .system)
+        if #available(iOS 13.0, *) {
+            closeButton.setImage(UIImage(systemName: "xmark"), for: .normal)
+        } else {
+            // Fallback on earlier versions
+        }
+        closeButton.setTitle("", for: .normal)
+        closeButton.backgroundColor = .white
+        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        
+        // Set the close button position
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(closeButton)
+        NSLayoutConstraint.activate([
+            closeButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0),
+            closeButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -5),
+            closeButton.heightAnchor.constraint(equalToConstant: 44),
+            closeButton.widthAnchor.constraint(equalToConstant: 44)
+        ])
+    }
+    
+    //on click action of close button
+    @objc func closeButtonTapped() {
+        print("Close button tapped")
+        removeTinkNavigationController()
+        closeButton.removeFromSuperview()
+        containerView.removeFromSuperview()
+        self.removeFromSuperview()
+    }
+    
+    func removeTinkNavigationController() {
+        tinkNavigationController?.dismiss(animated: true)
+        tinkNavigationController?.willMove(toParent: nil)
+        tinkNavigationController?.view.removeFromSuperview()
+        tinkNavigationController?.removeFromParent()
+        tinkNavigationController = nil
+    }
+    
+}

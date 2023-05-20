@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5E555C0D2413F4C50049A1A2 /* TinkWrapperV2.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* TinkWrapperV2.m */; };
-		F4FF95D7245B92E800C19C63 /*  TinkWrapperV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /*  TinkWrapperV2.swift */; };
+		A97FDDDC2A162B9500492C99 /* TinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97FDDDB2A162B9500492C99 /* TinkView.swift */; };
+		A97FDDDD2A162C8700492C99 /* TinkViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98987D12A1625BA00402070 /* TinkViewManager.swift */; };
+		A9B4EADC2A175BC10090F4BB /* TinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B4EADB2A175BC10090F4BB /* TinkController.swift */; };
+		F4FF95D7245B92E800C19C63 /* TinkWrapperV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /* TinkWrapperV2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,10 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libTinkWrapperV2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTinkWrapperV2.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A97FDDDB2A162B9500492C99 /* TinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinkView.swift; sourceTree = "<group>"; };
+		A98987D12A1625BA00402070 /* TinkViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinkViewManager.swift; sourceTree = "<group>"; };
+		A98987D22A1626A300402070 /* TinkViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TinkViewManager.m; sourceTree = "<group>"; };
+		A9B4EADB2A175BC10090F4BB /* TinkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinkController.swift; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* TinkWrapperV2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TinkWrapperV2.m; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* TinkWrapperV2-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TinkWrapperV2-Bridging-Header.h"; sourceTree = "<group>"; };
 		F4FF95D6245B92E800C19C63 /* TinkWrapperV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinkWrapperV2.swift; sourceTree = "<group>"; };
@@ -52,11 +58,31 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				A9B4EADA2A175B840090F4BB /* Controller */,
+				A97FDDDA2A162B7B00492C99 /* Bridge */,
+				A98987D22A1626A300402070 /* TinkViewManager.m */,
+				A98987D12A1625BA00402070 /* TinkViewManager.swift */,
 				F4FF95D6245B92E800C19C63 /* TinkWrapperV2.swift */,
 				B3E7B5891CC2AC0600A0062D /* TinkWrapperV2.m */,
 				F4FF95D5245B92E700C19C63 /* TinkWrapperV2-Bridging-Header.h */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		A97FDDDA2A162B7B00492C99 /* Bridge */ = {
+			isa = PBXGroup;
+			children = (
+				A97FDDDB2A162B9500492C99 /* TinkView.swift */,
+			);
+			path = Bridge;
+			sourceTree = "<group>";
+		};
+		A9B4EADA2A175B840090F4BB /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A9B4EADB2A175BC10090F4BB /* TinkController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -116,8 +142,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A97FDDDC2A162B9500492C99 /* TinkView.swift in Sources */,
+				A9B4EADC2A175BC10090F4BB /* TinkController.swift in Sources */,
 				F4FF95D7245B92E800C19C63 /* TinkWrapperV2.swift in Sources */,
-				B3E7B58A1CC2AC0600A0062D /* TinkWrapperV2.m in Sources */,
+				A97FDDDD2A162C8700492C99 /* TinkViewManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +256,7 @@
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = TinkWrapperV2;
@@ -247,6 +276,7 @@
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = TinkWrapperV2;

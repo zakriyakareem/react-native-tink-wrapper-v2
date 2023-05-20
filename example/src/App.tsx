@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { TinkView } from 'react-native-tink-wrapper-v2';
 
 export default function App() {
@@ -11,19 +11,16 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <TinkView style={{ flex: 0.5 }} onSuccess={onSuccess} />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <TinkView style={{ height:400 }} onSuccess={onSuccess} />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
+ 
 });
