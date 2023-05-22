@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A92EBE312A18D3BA00885DBD /* TinkLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92EBE302A18D3BA00885DBD /* TinkLinkManager.swift */; };
+		A92EBE332A18D42200885DBD /* TinkLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A92EBE322A18D42200885DBD /* TinkLinkManager.m */; };
 		A97FDDDC2A162B9500492C99 /* TinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97FDDDB2A162B9500492C99 /* TinkView.swift */; };
 		A97FDDDD2A162C8700492C99 /* TinkViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98987D12A1625BA00402070 /* TinkViewManager.swift */; };
 		A9B4EADC2A175BC10090F4BB /* TinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B4EADB2A175BC10090F4BB /* TinkController.swift */; };
@@ -27,6 +29,8 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libTinkWrapperV2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTinkWrapperV2.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A92EBE302A18D3BA00885DBD /* TinkLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinkLinkManager.swift; sourceTree = "<group>"; };
+		A92EBE322A18D42200885DBD /* TinkLinkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TinkLinkManager.m; sourceTree = "<group>"; };
 		A97FDDDB2A162B9500492C99 /* TinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinkView.swift; sourceTree = "<group>"; };
 		A98987D12A1625BA00402070 /* TinkViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinkViewManager.swift; sourceTree = "<group>"; };
 		A98987D22A1626A300402070 /* TinkViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TinkViewManager.m; sourceTree = "<group>"; };
@@ -73,6 +77,8 @@
 			isa = PBXGroup;
 			children = (
 				A97FDDDB2A162B9500492C99 /* TinkView.swift */,
+				A92EBE302A18D3BA00885DBD /* TinkLinkManager.swift */,
+				A92EBE322A18D42200885DBD /* TinkLinkManager.m */,
 			);
 			path = Bridge;
 			sourceTree = "<group>";
@@ -142,6 +148,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A92EBE312A18D3BA00885DBD /* TinkLinkManager.swift in Sources */,
+				A92EBE332A18D42200885DBD /* TinkLinkManager.m in Sources */,
 				A97FDDDC2A162B9500492C99 /* TinkView.swift in Sources */,
 				A9B4EADC2A175BC10090F4BB /* TinkController.swift in Sources */,
 				F4FF95D7245B92E800C19C63 /* TinkWrapperV2.swift in Sources */,
@@ -196,7 +204,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -240,7 +248,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

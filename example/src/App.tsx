@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { TinkView } from 'react-native-tink-wrapper-v2';
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { TinkView ,AccountView} from 'react-native-tink-wrapper-v2';
 
 export default function App() {
-  const [tinkData, setTinkData] = useState('');
+  const [token, setToken] = useState('');
+
 
   const onSuccess = (data: string) => {
-    setTinkData(data);
     console.log('on success', data);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <TinkView style={{ height:400 }} onSuccess={onSuccess} />
+      {/* {token =='' ?<TinkView onSuccess={(token:string)=>setToken(token)} />:<AccountView style={{ flex:0.5,width:'10%' }} onSuccess={onSuccess} /> } */}
+      <TinkView onSuccess={(token:string)=>setToken(token)} />
+      <AccountView style={{ flex:0.5,width:'10%',height:'20%' }} onSuccess={onSuccess} />
     </SafeAreaView>
   );
 }
@@ -20,6 +22,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal:50,
     
   },
  

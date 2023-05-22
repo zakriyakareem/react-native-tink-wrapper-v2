@@ -9,13 +9,16 @@ import Foundation
 import UIKit
 import TinkLink
 import TinkLinkUI
+import TinkMoneyManagerUI
+import TinkCore
 
 class TinkController: UIView {
     
     var containerView: UIView!
     var closeButton: UIButton!
     var tinkNavigationController: UINavigationController?
-    
+    var userToken:String =
+    "eyJhbGciOiJFUzI1NiIsImtpZCI6ImFlMmI0MzNkLWFhYmYtNDMzZC1iZTM5LTZhYjNmOTBjNDZjMCIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODQ3NDU5NDQsImlhdCI6MTY4NDczODc0NCwiaXNzIjoidGluazovL2F1dGgiLCJqdGkiOiI0ZWEwZWJmYS01NWQwLTQ0NWYtOGM2Yy0yYzMwZTQyOTVhNWEiLCJvcmlnaW4iOiJtYWluIiwic2NvcGVzIjpbInByb3ZpZGVyczpyZWFkIiwidXNlcjpjcmVhdGUiLCJhdXRob3JpemF0aW9uOnJlYWQiLCJjcmVkZW50aWFsczp3cml0ZSIsImF1dGhvcml6YXRpb246Z3JhbnQiLCJjcmVkZW50aWFsczpyZWZyZXNoIiwidXNlcjpyZWFkIiwiYWNjb3VudHM6cmVhZCIsImNyZWRlbnRpYWxzOnJlYWQiLCJ0cmFuc2FjdGlvbnM6cmVhZCJdLCJzdWIiOiJ0aW5rOi8vYXV0aC91c2VyLzEzZTQxMGZhNzc0ZTQ2MjdiMWNkMjI2MWNmMTBhMjFmIiwidGluazovL2FwcC9pZCI6IjVlNzNmZGNkMWEwYzRiOTNiYWEzMWM3OTZkMTVhZWEwIiwidGluazovL2FwcC92ZXJpZmllZCI6ImZhbHNlIiwidGluazovL2NsaWVudC9pZCI6IjJiNDBkNzY2NzhhMjQxNWViNGJlMTRhNDE1Njg1ZGIyIn0.O3kwEuo7hli28BU3dT2RZDrr-tu21SVmJd-mK_H8L4N2cO3hbGKHZSNi33iQKnBnu-jddbwHhjWzhIJbfEl9YQ"
     // This is a simple sample app, demonstrating how easy it can be to integrate Tinks mobile SDK in your app.
 
     // First, add your client ID. It can be found on console.tink.com in your apps settings.
@@ -27,8 +30,8 @@ class TinkController: UIView {
     
     // Now you're all set!
     // Hit Run to test your project with Tinks mobile SDK.
-    
-    var onSuccess: ((OneTimeConnection)->Void)?
+     
+    var onSuccess: (()->Void)?
     var onFailure: ((Error)->Void)?
     
     public func initSubview(frame: CGRect) {
@@ -57,20 +60,49 @@ class TinkController: UIView {
     //Call this function whenever you want to start tink.
     //It will initiate tink and add it into the container view that we created in the start.
     func startTinkController() {
-        let configuration = Configuration(clientID: clientID, redirectURI: redirectURI)
-        let accountListViewController = AccountListViewController()
-        accountListViewController.show(accountListViewController, sender:self)
-        tinkNavigationController = Tink.Transactions.connectAccountsForOneTimeAccess(configuration: configuration, market: market) { [weak self] result in
-            switch result {
-            case .success(let connection):
-                print("TinkLink OneTimeConnection code: \(String(describing: connection.code)), TinkLink OneTimeConnection credentialsID: \(connection.credentialsID)")
-                self?.onSuccess?(connection)
-            case .failure(let error):
-                print("TinkLink OneTimeConnection error: \(error)")
-                self?.onFailure?(error)
+        let configuration = TinkMoneyManagerConfiguration(clientID: clientID)
+            let tink = Tink(configuration: configuration)
+               tink.userSession = .accessToken(userToken)
+        
+//        Tink.shared.refresh()
+//        tink.refresh()
+       
+              
+        let overviewViewController = FinanceOverviewViewController(tink: tink, features: [.accounts,])
+
+               overviewViewController.title = "Overview"
+               overviewViewController.tabBarItem = UITabBarItem(title: "Overview", image: UIImage(systemName: "chart.pie.fill"), tag: 0)
+        overviewViewController.configuration.noAccountsAction = .addAccount(onTap: {
+            let tinkLinkViewController = TinkLinkViewController { result in
+                // Handle result
+                            switch result {
+                            case .success(let connection):
+                                print("TinkLink OneTimeConnection success: \(connection)")
+                               
+                            case .failure(let error):
+                                print("TinkLink OneTimeConnection error: \(error)")
+                               
+                            }
             }
-        }
-        containerView.addSubview(tinkNavigationController!.view)
+           
+        })
+//        Tink.configure(with: configuration)
+//        let accountsViewController = AccountsViewController()
+//        accountsViewController.show(accountsViewController, sender: self)
+        
+//        let configuration = TinkLinkConfiguration(clientID: clientID, redirectURI: redirectURI)
+//        tinkNavigationController = Tink.Transactions.connectAccountsForOneTimeAccess(configuration: configuration, market: market) { [weak self] result in
+//            switch result {
+//            case .success(let connection):
+//                print("TinkLink OneTimeConnection code: \(String(describing: connection.code)), TinkLink OneTimeConnection credentialsID: \(connection.credentialsID)")
+//                self?.onSuccess?(connection)
+//            case .failure(let error):
+//                print("TinkLink OneTimeConnection error: \(error)")
+//                self?.onFailure?(error)
+//            }
+//        }
+        let navigationController = UINavigationController(rootViewController: overviewViewController)
+        containerView.addSubview(navigationController.view)
         tinkNavigationController?.view.frame = containerView.bounds
         addCloseButton()
         tinkNavigationController?.setNavigationBarHidden(true, animated: false)

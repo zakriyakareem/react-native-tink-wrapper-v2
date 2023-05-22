@@ -77,9 +77,6 @@ PODS:
   - hermes-engine (0.71.7):
     - hermes-engine/Pre-built (= 0.71.7)
   - hermes-engine/Pre-built (0.71.7)
-  - Kingfisher (5.15.8):
-    - Kingfisher/Core (= 5.15.8)
-  - Kingfisher/Core (5.15.8)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
   - RCT-Folly (2021.07.22.00):
@@ -335,8 +332,9 @@ PODS:
     - glog
   - react-native-tink-wrapper-v2 (0.5.0):
     - React-Core
-    - TinkLink (= 2.1.0)
-    - TinkLinkUI
+    - TinkLink (~> 1.7.0)
+    - TinkLinkUI (~> 1.7.0)
+    - TinkMoneyManagerUI (~> 0.28.0)
   - React-perflogger (0.71.7)
   - React-RCTActionSheet (0.71.7):
     - React-Core/RCTActionSheetHeaders (= 0.71.7)
@@ -422,11 +420,14 @@ PODS:
     - React-logger (= 0.71.7)
     - React-perflogger (= 0.71.7)
   - SocketRocket (0.6.0)
-  - TinkLink (2.1.0)
-  - TinkLinkUI (0.14.0):
+  - TinkCore (1.11.0)
+  - TinkLink (1.7.1):
+    - TinkCore (~> 1.7)
+  - TinkLinkUI (1.7.1):
     - Down (~> 0.9)
-    - Kingfisher (~> 5.13)
-    - TinkLink
+    - TinkLink (= 1.7.1)
+  - TinkMoneyManagerUI (0.28.0):
+    - TinkCore (~> 1.9)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -507,12 +508,13 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - fmt
-    - Kingfisher
     - libevent
     - OpenSSL-Universal
     - SocketRocket
+    - TinkCore
     - TinkLink
     - TinkLinkUI
+    - TinkMoneyManagerUI
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -606,7 +608,6 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: 4438d2b8bf8bebaba1b1ac0451160bab59e491f8
-  Kingfisher: a3c03d702433fa6cfedabb2bddbe076fb8f2e902
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
@@ -623,7 +624,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: eaa5f71eb8f6861cf0e57f1a0f52aeb020d9e18e
   React-jsinspector: 9885f6f94d231b95a739ef7bb50536fb87ce7539
   React-logger: 3f8ebad1be1bf3299d1ab6d7f971802d7395c7ef
-  react-native-tink-wrapper-v2: 983fdf5263656a76188a24ffe72c8ae4c410f1a7
+  react-native-tink-wrapper-v2: 6c0ffe7602257ffc537bf3128c5b67d576ded070
   React-perflogger: 2d505bbe298e3b7bacdd9e542b15535be07220f6
   React-RCTActionSheet: 0e96e4560bd733c9b37efbf68f5b1a47615892fb
   React-RCTAnimation: fd138e26f120371c87e406745a27535e2c8a04ef
@@ -638,11 +639,13 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: c5c89f8f543842dd864b63ded1b0bbb9c9445328
   ReactCommon: dbfbe2f7f3c5ce4ce44f43f2fd0d5950d1eb67c5
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
-  TinkLink: 8769d70c57de1eda74e40e4cd7b5f4009dff3fc2
-  TinkLinkUI: c45e529cf6442b97db747197c80a1ddf6aac665a
+  TinkCore: df7833b5b9e72b2d8cf08a7a271572337055128f
+  TinkLink: 00a361848c7e423c7d4c9ddef9a9b1aea7d2eb4b
+  TinkLinkUI: 3fed58d98d18c4bed6eba127c64a4c8591a2e8a2
+  TinkMoneyManagerUI: 991a0d06942b73e70640228c92fb3d9598871e95
   Yoga: d56980c8914db0b51692f55533409e844b66133c
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 35081c1510ea133c5fd1580172218f0fb09d7f78
+PODFILE CHECKSUM: 325497f844dd12335bbeef9a8ef04e685c178b05
 
 COCOAPODS: 1.12.0

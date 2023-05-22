@@ -10,14 +10,15 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => "11.0" }
+  s.platforms    = { :ios => "14.0" }
   s.source       = { :git => "https://github.com/zakriyakareem/react-native-tink-wrapper-v2.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency "React-Core"
-  s.dependency "TinkLink", "2.1.0"
-  s.dependency "TinkLinkUI"
+  s.dependency "TinkLink",  "~> 1.7.0"
+  s.dependency "TinkLinkUI",  "~> 1.7.0"
+  s.dependency "TinkMoneyManagerUI",  "~> 0.28.0"
 
   # Don't install the dependencies when we run `pod install` in the old architecture.
   if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
@@ -32,6 +33,7 @@ Pod::Spec.new do |s|
     s.dependency "RCTRequired"
     s.dependency "RCTTypeSafety"
     s.dependency "ReactCommon/turbomodule/core"
-    s.dependency "TinkLink", "~> 2.1.0"
+    s.dependency "TinkLink"
+    s.dependency "TinkLinkUI"
   end
 end
