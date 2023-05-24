@@ -68,23 +68,43 @@ class TinkController: UIView {
 //        tink.refresh()
        
               
-        let overviewViewController = FinanceOverviewViewController(tink: tink, features: [.accounts,])
+        let overviewViewController = FinanceOverviewViewController(tink: tink, features: [.accounts])
 
                overviewViewController.title = "Overview"
                overviewViewController.tabBarItem = UITabBarItem(title: "Overview", image: UIImage(systemName: "chart.pie.fill"), tag: 0)
         overviewViewController.configuration.noAccountsAction = .addAccount(onTap: {
-            let tinkLinkViewController = TinkLinkViewController { result in
-                // Handle result
-                            switch result {
-                            case .success(let connection):
-                                print("TinkLink OneTimeConnection success: \(connection)")
-                               
-                            case .failure(let error):
-                                print("TinkLink OneTimeConnection error: \(error)")
-                               
-                            }
-            }
-           
+            
+            let scopes: [Scope] = [
+              .transactions(.read),
+              .accounts(.read),
+              .authorization(.grant),
+              .authorization(.read),
+              .user(.create),
+              .user(.read),
+              .credentials(.read),
+              .credentials(.write),
+              .credentials(.refresh),
+              .providers(.read)
+            ]
+            
+            let redirectURI = NSURL(string: "https://console.tink.com/callback")
+                 
+            
+                 let configuration = TinkLinkConfiguration(clientID: "2b40d76678a2415eb4be14a415685db2", appURI: redirectURI! as URL)
+
+
+                 let tinkLinkViewController = TinkLinkViewController(configuration: configuration, market: "FR", scopes: scopes, providerPredicate: .kinds(.all)) { (result) in
+                   // (Result<(code: AuthorizationCode, credentials: Credentials), TinkLinkError>)
+                   switch (result) {
+                   case .success(let data):
+                       print("success TinkLinkViewController")
+                   case .failure(let error):
+                     return print("Failure TinkViewController")
+                   }
+
+                 }
+            self.parentViewController?.present(tinkLinkViewController, animated: true)
+                 
         })
 //        Tink.configure(with: configuration)
 //        let accountsViewController = AccountsViewController()
@@ -101,11 +121,15 @@ class TinkController: UIView {
 //                self?.onFailure?(error)
 //            }
 //        }
+        let parentController = self.parentViewController
         let navigationController = UINavigationController(rootViewController: overviewViewController)
+        self.tinkNavigationController = navigationController
+        parentController?.addChild(navigationController)
         containerView.addSubview(navigationController.view)
+        navigationController.didMove(toParent: parentController)
         tinkNavigationController?.view.frame = containerView.bounds
         addCloseButton()
-        tinkNavigationController?.setNavigationBarHidden(true, animated: false)
+//        tinkNavigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     // Create the close button in containerView
@@ -148,4 +172,10 @@ class TinkController: UIView {
         tinkNavigationController = nil
     }
     
+}
+
+extension UIResponder {
+    public var parentViewController: UIViewController? {
+        return next as? UIViewController ?? next?.parentViewController
+    }
 }
