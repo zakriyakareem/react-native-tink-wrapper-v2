@@ -1,6 +1,7 @@
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import android.widget.FrameLayout
 import androidx.annotation.NonNull
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.WritableMap
@@ -30,12 +31,18 @@ class TinkViewManager : SimpleViewManager<View>() {
 
   @NonNull
   override fun createViewInstance(reactContext: ThemedReactContext): View {
+//    ReactContextSingleton.reactContext = reactContext
+//    val intent = Intent(reactContext, FullScreenActivity::class.java)
+//    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//
+//    reactContext.startActivityForResult(intent, REQUEST_CODE_FULLSCREEN, null)
+//    return View(reactContext)
     ReactContextSingleton.reactContext = reactContext
     val intent = Intent(reactContext, FullScreenActivity::class.java)
     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
-    reactContext.startActivityForResult(intent, REQUEST_CODE_FULLSCREEN, null)
-    return View(reactContext)
+    reactContext.startActivity(intent)
+    return FrameLayout(reactContext)
   }
 
   fun sendEvent(reactContext: ReactContext, eventName: String, params: WritableMap) {

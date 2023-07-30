@@ -27,6 +27,10 @@ import com.tink.link.core.navigator.FullScreen
 import com.tink.link.core.themes.TinkAppearance
 import com.tink.link.core.themes.TinkAppearanceXml
 import com.tink.link.sdk.R
+import com.tink.moneymanagerui.OverviewFeature
+import com.tink.moneymanagerui.OverviewFeatures
+import com.tink.moneymanagerui.StatisticType
+
 //import com.tinkwrapperv2.TinkViewManager.React
 
 /**
@@ -49,7 +53,7 @@ class FullScreenActivity : AppCompatActivity() {
     }
 
     // Present the SDK.
-    showTransactionsWithOneTimeAccess()
+    sampleOverviewFeatures()
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
@@ -63,6 +67,24 @@ class FullScreenActivity : AppCompatActivity() {
     const val RESULT_KEY = "result"
   }
 
+  private  fun sampleOverviewFeatures () {
+    OverviewFeatures(
+      listOf(
+        OverviewFeature.ActionableInsights,
+        OverviewFeature.Statistics(
+          listOf(
+            StatisticType.EXPENSES,
+            StatisticType.LEFT_TO_SPEND,
+            StatisticType.INCOME
+          )
+        ),
+        OverviewFeature.Accounts(),
+        OverviewFeature.LatestTransactions,
+        OverviewFeature.Budgets
+      )
+    )
+  }
+
   // Example of one time access to Transactions presented in a fullscreen.
   // TODO: For launching other flows, please find implementation guidance in this link.
   private fun showTransactionsWithOneTimeAccess() {
@@ -72,6 +94,8 @@ class FullScreenActivity : AppCompatActivity() {
     val fullScreen = FullScreen(getTinkAppearance())
     // More parameters can be added to ConnectAccountsForOneTimeAccess().
     val oneTimeAccess = AccountCheckCreateReport(Market.SE)
+
+
 
     // Call this method to trigger the flow.
     Tink.AccountCheck.createReport(

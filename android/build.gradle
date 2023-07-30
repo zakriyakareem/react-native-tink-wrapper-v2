@@ -3,14 +3,22 @@ buildscript {
   def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["TinkWrapperV2_kotlinVersion"]
 
   repositories {
+    mavenLocal()
+     flatDir {
+      dirs 'libs'
+    }
+
     google()
     mavenCentral()
+     jcenter()
   }
 
   dependencies {
     classpath "com.android.tools.build:gradle:7.2.1"
     // noinspection DifferentKotlinGradleVersion
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+
   }
 }
 
@@ -43,6 +51,9 @@ android {
     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
     buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+    vectorDrawables {
+      useSupportLibrary true
+    }
   }
   buildTypes {
     release {
@@ -60,16 +71,37 @@ android {
   }
     buildFeatures {
         viewBinding true
+      compose true
     }
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    dataBinding {
+   enabled = true
+}
+  composeOptions {
+    kotlinCompilerExtensionVersion '1.3.2'
+  }
+  packagingOptions {
+    resources {
+      excludes += '/META-INF/{AL2.0,LGPL2.1}'
+    }
+  }
 
 }
 
-repositories {
-  mavenCentral()
-  google()
+allprojects {
+    repositories {
+      mavenLocal()
+      flatDir {
+        dirs 'libs'
+      }
+      google()
+       mavenCentral()
+        jcenter()
+
+    }
+
 }
 
 def kotlin_version = getExtOrDefault("kotlinVersion")
@@ -81,14 +113,17 @@ dependencies {
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1"
-   implementation ("com.tink:link:2.0.0")
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
-    // implementation ("com.tink:link-ui:0.16.0")
-    constraints {
+    implementation "com.tink:link:+"
+    implementation ("com.tink:link-ui:+")
+  implementation("com.tink.moneymanager:moneymanager-ui:0.28.0")
+
+
+  constraints {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
             because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
         }
@@ -96,6 +131,8 @@ dependencies {
             because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
         }
     }
+  debugImplementation 'androidx.compose.ui:ui-tooling'
+  debugImplementation 'androidx.compose.ui:ui-test-manifest'
 }
 
 if (isNewArchitectureEnabled()) {

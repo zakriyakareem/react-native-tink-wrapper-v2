@@ -1,114 +1,114 @@
-package com.tink.link.sample.fullscreen
-
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
-import com.tink.link.core.base.Tink
-import com.tink.link.core.data.request.common.Market
-import com.tink.link.core.data.request.configuration.Configuration
-import com.tink.link.core.data.request.transactions.ConnectAccountsForOneTimeAccess
-import com.tink.link.core.data.response.error.TinkError
-import com.tink.link.core.data.response.success.transactions.TinkTransactionsSuccess
-import com.tink.link.core.navigator.FullScreen
-import com.tink.link.core.themes.TinkAppearance
-import com.tink.link.core.themes.TinkAppearanceCompose
+import android.view.View
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.tink.core.Tink
+import com.tink.moneymanagerui.FinanceOverviewFragment
+import com.tink.moneymanagerui.OnCustomContainerCreatedListener
+import com.tink.moneymanagerui.OnFragmentViewCreatedListener
+import com.tink.moneymanagerui.OverviewFeature
+import com.tink.moneymanagerui.OverviewFeatures
+import com.tink.moneymanagerui.StatisticType
+import com.tink.service.network.Environment
+import com.tink.service.network.TinkConfiguration
 
-/**
- * This class is to show how to implement Transactions as Fullscreen in Compose.
- *
- * */
+class FullScreenComposeActivity : AppCompatActivity(), OnFragmentViewCreatedListener {
 
-class FullScreenComposeActivity : ComponentActivity() {
+  private lateinit var currentFinanceOverviewFragment: FinanceOverviewFragment
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    setContentView(com.tink.link.ui.R.layout.tink_activity_main)
 
-    // Add Compose view.
-    setContent {
-      // Present the SDK.
-      ShowTransactionsWithOneTimeAccess()
-    }
+    val environment: Environment = Environment.Production
+    val clientId: String = ""
+    val accessToken: String = ""
+
+    val config = TinkConfiguration(
+      environment,
+      clientId,
+      Uri.parse("https://localhost:3000/callback")
+    )
+
+    Tink.init(config, applicationContext)
+
+    supportFragmentManager.beginTransaction().add(
+      com.tink.link.ui.R.id.fragment_container_view_tag,
+      FinanceOverviewFragment.newInstance(
+        accessToken = accessToken,
+        styleResId = com.tink.link.ui.R.style.TinkLinkUiStyle,
+        overviewFeatures = getOverviewFeatures(),
+        isEditableOnPendingTransaction = true,
+        isTransactionDetailsEnabled = true,
+        fragmentViewCreatedListener = this@FullScreenComposeActivity
+      ).also {
+        currentFinanceOverviewFragment = it
+      }
+    ).commit()
   }
 
-  // Example of one time access to Transactions presented in a fullscreen.
-  // TODO: For launching other flows, please find implementation guidance in this link.
-  @Composable
-  private fun ShowTransactionsWithOneTimeAccess() {
-    val configuration = Configuration(
-      clientId = "2b40d76678a2415eb4be14a415685db2",
-      redirectUri = "https://console.tink.com/callback")
-    val fullScreen = FullScreen(getTinkTheme())
+  private fun getOverviewFeatures() =
+    OverviewFeatures(
+      features = listOf(
+        OverviewFeature.ActionableInsights,
+        OverviewFeature.Statistics(
+          listOf(
+            StatisticType.EXPENSES,
+            StatisticType.INCOME
+          )
+        ),
+        OverviewFeature.CustomContainerView(
+          containerViewId = com.tink.link.ui.R.id.container,
+          width = FrameLayout.LayoutParams.MATCH_PARENT,
+          height = FrameLayout.LayoutParams.WRAP_CONTENT
+        ),
+        OverviewFeature.Accounts(),
+        OverviewFeature.LatestTransactions,
+        OverviewFeature.Budgets
+      )
+    )
 
-    // More parameters can be added to ConnectAccountsForOneTimeAccess().
-    val oneTimeAccess = ConnectAccountsForOneTimeAccess(Market.SE)
+  private fun setupCustomView(viewId: Int) {
+    currentFinanceOverviewFragment.getContainerById(
+      viewId,
+      object : OnCustomContainerCreatedListener {
+        override fun onCustomContainerCreated(container: FrameLayout) {
+          val customComponent = View.inflate(
+            this@FullScreenComposeActivity,
+            com.tink.link.ui.R.layout.custom_dialog,
+            container
+          )
 
-    // Call this method to trigger the flow.
-    Tink.Transactions.connectAccountsForOneTimeAccess(
-      this,
-      configuration,
-      oneTimeAccess,
-      fullScreen,
-      { success: TinkTransactionsSuccess ->
-        Log.d(TAG, "credentials_id = ${success.credentialsId}")
-        Log.d(TAG, "code = ${success.code}")
-      },
-      { error: TinkError ->
-        Log.d(TAG, "error message = ${error.errorDescription}")
+          customComponent.findViewById<Button>(com.tink.link.ui.R.id.custom)
+            .setOnClickListener {
+              Toast.makeText(it.context, "Custom button clicked", Toast.LENGTH_SHORT)
+                .show()
+            }
+        }
       }
     )
   }
 
-  private fun getTinkTheme(): TinkAppearance {
-    return TinkAppearanceCompose(
-      light = TinkAppearanceCompose.ThemeAttributes(
-        toolbarColor = Color.White,
-        windowBackgroundColor = Color.White,
-        iconBack = {
-          Icon(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = "Back",
-            tint = Color.Black
-          )
-        },
-        iconClose = {
-          Icon(
-            imageVector = Icons.Filled.Close,
-            contentDescription = "Close",
-            tint = Color.Black
-          )
-        },
-        toolbarTitle = { Text(text = "Tink", color = Color.Black, fontSize = 24.sp) }
-      ),
-      dark = TinkAppearanceCompose.ThemeAttributes(
-        toolbarColor = Color.Black,
-        windowBackgroundColor = Color.Black,
-        iconBack = {
-          Icon(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = "Back",
-            tint = Color.White
-          )
-        },
-        iconClose = {
-          Icon(
-            imageVector = Icons.Outlined.Close,
-            contentDescription = "Close",
-            tint = Color.White
-          )
-        },
-        toolbarTitle = { Text(text = "Tink", color = Color.White, fontSize = 24.sp) }
-      )
-    )
+  override fun onFragmentViewCreated() {
+    setupCustomView(com.tink.link.ui.R.id.custom)
+  }
+
+  override fun onBackPressed() {
+    if (!currentFinanceOverviewFragment.handleBackPress()) {
+      super.onBackPressed()
+    }
+  }
+
+  // Add an exported static function to start the activity from other classes
+  companion object {
+    fun start(context: Context) {
+      val intent = Intent(context, FullScreenComposeActivity::class.java)
+      context.startActivity(intent)
+    }
   }
 }
-
-private const val TAG = "tink-sdk-sample"
