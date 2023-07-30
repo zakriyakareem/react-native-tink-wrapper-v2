@@ -3,6 +3,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.NonNull
+import androidx.fragment.app.FragmentActivity
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.modules.core.DeviceEventManagerModule
@@ -12,6 +13,7 @@ import com.tink.link.core.themes.TinkAppearance
 import com.tink.link.core.themes.TinkAppearanceXml
 import com.tink.link.sample.fullscreen.FullScreenActivity
 import com.tink.link.sdk.R
+import com.tinkwrapperv2.MainActivity
 
 class TinkViewManager : SimpleViewManager<View>() {
   private var context: Context? = null
@@ -31,19 +33,18 @@ class TinkViewManager : SimpleViewManager<View>() {
 
   @NonNull
   override fun createViewInstance(reactContext: ThemedReactContext): View {
-//    ReactContextSingleton.reactContext = reactContext
-//    val intent = Intent(reactContext, FullScreenActivity::class.java)
-//    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//
-//    reactContext.startActivityForResult(intent, REQUEST_CODE_FULLSCREEN, null)
-//    return View(reactContext)
     ReactContextSingleton.reactContext = reactContext
-    val intent = Intent(reactContext, FullScreenActivity::class.java)
+    val intent = Intent(reactContext, MainActivity::class.java)
     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
-    reactContext.startActivity(intent)
-    return FrameLayout(reactContext)
+    reactContext.startActivityForResult(intent, REQUEST_CODE_FULLSCREEN, null)
+    return View(reactContext)
+
+
   }
+
+
+
 
   fun sendEvent(reactContext: ReactContext, eventName: String, params: WritableMap) {
     reactContext

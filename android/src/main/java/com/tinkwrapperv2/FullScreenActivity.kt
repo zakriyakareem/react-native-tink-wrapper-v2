@@ -53,7 +53,7 @@ class FullScreenActivity : AppCompatActivity() {
     }
 
     // Present the SDK.
-    sampleOverviewFeatures()
+    showTransactionsWithOneTimeAccess()
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
@@ -67,23 +67,7 @@ class FullScreenActivity : AppCompatActivity() {
     const val RESULT_KEY = "result"
   }
 
-  private  fun sampleOverviewFeatures () {
-    OverviewFeatures(
-      listOf(
-        OverviewFeature.ActionableInsights,
-        OverviewFeature.Statistics(
-          listOf(
-            StatisticType.EXPENSES,
-            StatisticType.LEFT_TO_SPEND,
-            StatisticType.INCOME
-          )
-        ),
-        OverviewFeature.Accounts(),
-        OverviewFeature.LatestTransactions,
-        OverviewFeature.Budgets
-      )
-    )
-  }
+
 
   // Example of one time access to Transactions presented in a fullscreen.
   // TODO: For launching other flows, please find implementation guidance in this link.
