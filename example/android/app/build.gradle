@@ -151,10 +151,14 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
-
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
+  implementation("com.tink.moneymanager:moneymanager-ui:0.28.0")
+//  api project(':Money-Manager')
+//  implementation "io.reactivex.rxjava2:rxjava:2.1.8"
+//  implementation 'com.facebook.soloader:soloader:0.9.0+'
+//  implementation 'com.squareup.okhttp3:logging-interceptor:+'
+//  implementation 'com.squareup.okhttp3:okhttp:+'
+  debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
@@ -165,6 +169,31 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+}
+allprojects {
+  repositories {
+    mavenLocal()
+    maven {
+      // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+      url("$rootDir/../node_modules/react-native/android")
+    }
+    maven {
+      // Android JSC is installed from npm
+      url("$rootDir/../node_modules/jsc-android/dist")
+    }
+    flatDir {
+      dirs 'libs'
+    }
+    google()
+    mavenCentral {
+      // We don't want to fetch react-native from Maven Central as there are
+      // older versions over there.
+      content {
+        excludeGroup "com.facebook.react"
+      }
+    }
+    maven { url 'https://www.jitpack.io' }
+  }
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
