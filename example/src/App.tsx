@@ -13,9 +13,9 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       {/* {token =='' ?<TinkView onSuccess={(token:string)=>setToken(token)} />:<AccountView style={{ flex:0.5,width:'10%' }} onSuccess={onSuccess} /> } */}
-       <TinkView style={{ flex:1 }} onSuccess={(token:string)=>setToken(token)} />
-      <AccountView style={{ flex:0.5 }} onSuccess={onSuccess} /> 
-      <Text style={{color:'blue',fontSize:32}}>Hello</Text>
+       {/* <TinkView style={{ flex:1 }} onSuccess={(token:string)=>setToken(token)} /> */}
+      <AccountView style={{ flex:0.5,height:320 }} onSuccess={onSuccess} /> 
+      <Text style={{color:'blue',fontSize:32,flex:1}}>Hello</Text>
     </SafeAreaView>
   );
 }
