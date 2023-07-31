@@ -3,6 +3,7 @@ package com.tinkwrapperv2
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.Toast
@@ -24,6 +25,23 @@ class MainActivity : FragmentActivity(), OnFragmentViewCreatedListener {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
+    val rootView = findViewById<ViewGroup>(android.R.id.content)
+
+//    // Get the screen width and height
+//    val displayMetrics = resources.displayMetrics
+//    val screenWidth = displayMetrics.widthPixels
+//    val screenHeight = displayMetrics.heightPixels
+//
+//    // Calculate 80% of the screen width and height
+//    val targetWidth = (screenWidth * 0.8).toInt()
+//    val targetHeight = (screenHeight * 0.8).toInt()
+//
+//    // Find the FrameLayout by its ID
+//    val fragmentContainer = findViewById<FrameLayout>(R.id.fragmentContainer)
+//
+//    // Set the width and height of the FrameLayout to 80% of the screen size
+//    val layoutParams = FrameLayout.LayoutParams(targetWidth, targetHeight)
+//    fragmentContainer.layoutParams = layoutParams
 
     val environment: Environment = Environment.Production
     val clientId: String = "2b40d76678a2415eb4be14a415685db2"
@@ -71,11 +89,12 @@ class MainActivity : FragmentActivity(), OnFragmentViewCreatedListener {
         OverviewFeature.CustomContainerView(
           containerViewId = R.id.myapp_custom_view,
           width = FrameLayout.LayoutParams.MATCH_PARENT,
-          height = FrameLayout.LayoutParams.WRAP_CONTENT
+          height = FrameLayout.LayoutParams.MATCH_PARENT,
+
         ),
         OverviewFeature.Accounts(),
-        OverviewFeature.LatestTransactions,
-        OverviewFeature.Budgets
+//        OverviewFeature.LatestTransactions,
+//        OverviewFeature.Budgets
       )
     )
 
