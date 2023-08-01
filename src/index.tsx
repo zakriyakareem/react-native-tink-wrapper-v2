@@ -1,54 +1,64 @@
 
-import React from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { HostComponent, View, findNodeHandle } from 'react-native';
 import {
   requireNativeComponent,
   UIManager,
   ViewStyle,
-  Platform,
-  NativeEventEmitter,
   NativeModules,
   Button
 } from 'react-native';
 
-const LINKING_ERROR =
-  `The package 'react-native-tink-wrapper-v2' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo Go\n';
-
-const ComponentName = 'TinkView';
-
 type TinkViewProps = {
   style: ViewStyle;
+  callbackUrl: string;
+  redirectUrl: string;
+  token: string;
+  clientId: string;
   onSuccess?: (data: string) => void;
 };
 
-// const TinkViewNativeModule = NativeModules.TinkViewManager;
-// const TinkViewEventEmitter = new NativeEventEmitter(TinkViewNativeModule);
+export const AccountViewComponent: HostComponent<TinkViewProps> = requireNativeComponent('TinkView');
 
-export const AccountView = UIManager.getViewManagerConfig(ComponentName) != null
-  ? requireNativeComponent<TinkViewProps>(ComponentName, null)
-  : () => {
-      throw new Error(LINKING_ERROR);
-    };
+export const AccountView = (props: TinkViewProps) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const viewId = findNodeHandle(ref.current);
+    UIManager.dispatchViewManagerCommand(
+      viewId,
+        // @ts-ignore
+        UIManager.TinkView.Commands.create.toString(),
+      [viewId],
+    );
+  });
+
+
+  return <AccountViewComponent
+    style={props.style}
+    redirectUrl={props.redirectUrl}
+    callbackUrl={props.callbackUrl}
+    token={props.token}
+    clientId={props.clientId}
+    ref={ref}
+  />
+
+}
 
 const TinkLinkSDK = NativeModules.TinkLinkSDK;
-export const TinkView =(props:any)=>{
+export const TinkView = (props: any) => {
   return <View>
     <Button
-title="Tink"
-onPress={async () => {
-const tinkResult = await TinkLinkSDK.startSDK("2b40d76678a2415eb4be14a415685db2", "FR", "myapp");
-props.onSuccess(tinkResult["code"])
-console.log(tinkResult["code"]);
-}}
->
-
-</Button>
+      title="Tink"
+      onPress={async () => {
+        const tinkResult = await TinkLinkSDK.startSDK("2b40d76678a2415eb4be14a415685db2", "FR", "myapp");
+        props.onSuccess(tinkResult["code"])
+        console.log(tinkResult["code"]);
+      }}
+    />
   </View>
 }
-    
+
 
 // React.useEffect(() => {
 //   const subscription = TinkViewEventEmitter.addListener('onSuccess', (data) => {
