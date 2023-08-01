@@ -15,6 +15,6 @@ class TinkViewPackage : ReactPackage {
   }
 
   override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-    return listOf(TinkViewManager())
+    return listOf(TinkViewManager(reactContext))
   }
 }

@@ -33,19 +33,6 @@ class TinkWrapperV2Module(reactContext: ReactApplicationContext) :
     market = Market.SE
   )
 
-
-
-
-
-
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
-  @ReactMethod
-  fun multiply(a: Double, b: Double, promise: Promise) {
-    promise.resolve(a * b)
-
-  }
-
   companion object {
     const val NAME = "TinkWrapperV2"
   }
